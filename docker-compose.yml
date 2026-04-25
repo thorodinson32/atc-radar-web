@@ -1,0 +1,17 @@
+services:
+  atc-radar-web:
+    build: .
+    container_name: atc-radar-web
+    restart: always
+    networks:
+      - aesir_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.atc-radar-web.rule=PathPrefix(`/atc-radar`)"
+      - "traefik.http.routers.atc-radar-web.entrypoints=web"
+      - "traefik.http.routers.atc-radar-web.priority=1"
+      - "traefik.http.services.atc-radar-web.loadbalancer.server.port=80"
+
+networks:
+  aesir_net:
+    external: true
