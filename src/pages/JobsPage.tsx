@@ -24,7 +24,7 @@ export default function JobsPage() {
             {syncData?.lastSyncedAt && (
               <span className="flex items-center gap-1 text-slate-600 text-xs">
                 <RefreshCw size={11} />
-                Updated {formatDistanceToNow(new Date(syncData.lastSyncedAt), { addSuffix: true })}
+                Updated {formatDistanceToNow(new Date(syncData.lastSyncedAt.endsWith('Z') ? syncData.lastSyncedAt : syncData.lastSyncedAt + 'Z'), { addSuffix: true })}
               </span>
             )}
           </div>
