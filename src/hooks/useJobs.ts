@@ -9,3 +9,11 @@ export function useJobs(filters: Partial<JobFilters>, page = 1, pageSize = 20) {
     staleTime: 5 * 60 * 1000,
   });
 }
+
+export function useLastSync() {
+  return useQuery({
+    queryKey: ['last-sync'],
+    queryFn: jobsApi.getLastSync,
+    staleTime: 60 * 1000,
+  });
+}

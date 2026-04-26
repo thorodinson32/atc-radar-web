@@ -29,6 +29,9 @@ export const jobsApi = {
 
   getJob: (id: string): Promise<Job> =>
     request(`/jobs/${encodeURIComponent(id)}`),
+
+  getLastSync: (): Promise<{ lastSyncedAt: string }> =>
+    request('/jobs/last-sync'),
 };
 
 export const alertsApi = {

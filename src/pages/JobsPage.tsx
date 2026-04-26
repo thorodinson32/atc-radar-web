@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, RefreshCw } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
 import type { JobFilters } from '../types';
-import { useJobs } from '../hooks/useJobs';
+import { useJobs, useLastSync } from '../hooks/useJobs';
 import JobCard from '../components/JobCard';
 import JobFiltersBar from '../components/JobFiltersBar';
 import AlertForm from '../components/AlertForm';
@@ -10,6 +11,7 @@ export default function JobsPage() {
   const [filters, setFilters] = useState<JobFilters>({ category: 'all', state: '', city: '', search: '' });
   const [page, setPage] = useState(1);
   const { data, isLoading, isError } = useJobs(filters, page);
+  const { data: syncData } = useLastSync();
   const totalPages = data ? Math.ceil(data.total / 20) : 0;
 
   return (
@@ -17,7 +19,15 @@ export default function JobsPage() {
       <div className="flex items-center justify-between px-8 pt-6 pb-3 flex-wrap gap-4">
         <div>
           <h1 className="text-slate-100 text-2xl font-bold m-0">ATC Job Listings</h1>
-          {data && <p className="text-slate-500 text-sm mt-1">{data.total} positions found</p>}
+          <div className="flex items-center gap-3 mt-1">
+            {data && <p className="text-slate-500 text-sm m-0">{data.total} positions found</p>}
+            {syncData?.lastSyncedAt && (
+              <span className="flex items-center gap-1 text-slate-600 text-xs">
+                <RefreshCw size={11} />
+                Updated {formatDistanceToNow(new Date(syncData.lastSyncedAt), { addSuffix: true })}
+              </span>
+            )}
+          </div>
         </div>
         <AlertForm />
       </div>
